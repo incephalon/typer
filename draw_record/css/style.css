@@ -1,0 +1,127 @@
+html {
+    width: 100%;
+    height: 100%;
+    min-width: 740px;
+    min-height: 500px;
+}
+
+body {
+    height: 100%;
+    line-height: normal;
+    //   min-width: 600px;
+    //   min-height: 600px;
+    position: relative;
+}
+
+.container {
+    //background-color: red;
+    height: 100%;
+}
+
+.tools {
+    background-color: #F6F6F6;
+    //background-color: #888888;
+    height: 40px;
+    position: relative;
+}
+.tools div {
+    line-height: 40px;
+    margin-left: 10px;
+
+}
+.tools a :hover {
+    color: #888888;
+}
+
+.tools i {
+    line-height: 40px;
+}
+
+.canvas {
+    //background-color: white;
+    height:-webkit-calc(100% - 40px);
+    height:-moz-calc(100% - 40px);
+    height:calc(100% - 40px);
+    width: 700px;
+}
+
+.bottom {
+    //background-color: blue;
+    //height: 30px;
+}
+
+.divider-tools {
+    height: 100%;
+    width: 1px;
+    border-left: solid 2px #DDDDDD;
+    display: inline-block;
+    background-color: #888888;
+}
+
+.pauseBtn {
+    color: blue;
+}
+
+.playBtn {
+    color: green;
+}
+
+.stopBtn {
+    color: black;
+}
+
+.slowBtn, .fastBtn {
+    color: mediumpurple;
+}
+
+.recordBtn {
+    color: red;
+}
+
+#canvas1 {
+    margin-top: 20px;
+    border: #888888 dashed 2px;
+}
+
+div.jPicker {
+    top: 40px;
+}
+span.jPicker {
+    float: left;
+    margin-top: 7px;
+    margin-left: 10px;
+}
+
+#brush_color:after {
+    float:left;
+}
+
+.stroke {
+    color:#cccccc;
+}
+.stroke_selected
+{
+    color:black;
+}
+
+.record-play-control i{
+    background-color: #BDF00F;
+    -webkit-box-shadow: 0 0 18px #91bd09;
+}
+
+.record-play-control i:hover {
+    background-color: #91bd09;
+    -webkit-box-shadow: 0 0 18px #91bd09;
+}
+
+ a.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: #cccccc;
+}
+
+.record-play-control a.disabled i{
+background-color: #eeeeee;
+-webkit-box-shadow: 0 0 18px #cccccc;
+}
+
