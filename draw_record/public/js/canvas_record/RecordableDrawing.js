@@ -14,6 +14,7 @@ RecordableDrawing = function(canvasId)
     this.currentLineWidth = 5;
     this.drawingColor = "rgb(0,0,0)";
     var pauseInfo = null;
+    var screenShotTime = 0;
 
     onMouseDown = function(event)
     {
@@ -106,6 +107,24 @@ RecordableDrawing = function(canvasId)
             self.currentRecording.resumeRecording();
     }
 
+
+    this.readyforScreenShot = function() {
+        // clear screen
+        // show the first screen
+        self.recordings[0].screenShotInfo = null;
+        screenShotTime = 0
+        self.clearCanvas();
+    }
+
+    this.drawNextScreenShot = function(timeInterval) {
+        // draw the next timeIntervel screen
+        // if there is not return false.
+        screenShotTime += timeInterval;
+        // test
+        return self.recordings[0].drawNextScreenShot(screenShotTime, timeInterval);
+    }
+
+
     this.playRecording = function(onPlayStart, onPlayEnd, onPause, interruptActionStatus)
     {
         if (typeof interruptActionStatus == 'undefined')
@@ -144,6 +163,8 @@ RecordableDrawing = function(canvasId)
             }, interruptActionStatus);
         }
     }
+
+
 
     function __onPause(index, onPlayEnd, onPause, interruptActionStatus)
     {
@@ -251,19 +272,19 @@ RecordableDrawing = function(canvasId)
                 break;
         }
     }
-    
-    this.getRecordInterval = function(){
+
+    this.getRecordInterval = function() {
         return 100;
     }
-    
-    this.getPlayInterval = function(){
+
+    this.getPlayInterval = function() {
         return self.recordings[0].playTimeInterval;
     }
-    
-    this.setPlayInterval = function(timeinterval){
+
+    this.setPlayInterval = function(timeinterval) {
         self.recordings[0].playTimeInterval = timeinterval;
     }
-    
+
 
     __init = function()
     {
@@ -314,6 +335,8 @@ Recording = function(drawingArg)
     var totalPauseTime = 0;
     var pauseStartTime = 0;
 
+    this.screenShotInfo = null;
+
     this.start = function()
     {
         self.currTime = 0;
@@ -334,18 +357,22 @@ Recording = function(drawingArg)
             self.intervalId = null;
         }
         self.started = false;
-
-        var SS = self.recTotalTime / 1000;
-        var HH = Math.floor(SS / 3600);
-        var MM = Math.floor((SS % 3600) / 60);
-        var LSS = Math.floor(SS % 60);
-        var formatted;
-        if (HH == 0)
-            formatted = ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
-        else
-            formatted = ((HH < 10) ? ("0" + HH) : HH) + ":" + ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
-        $("#totalTime").text(formatted);
-        $("#playTime").text("00:00");
+        
+        if (voice_flag == false) {
+            var SS = self.recTotalTime / 1000;
+            var HH = Math.floor(SS / 3600);
+            var MM = Math.floor((SS % 3600) / 60);
+            var LSS = Math.floor(SS % 60);
+            var formatted;
+            if (HH == 0)
+                formatted = ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
+            else
+                formatted = ((HH < 10) ? ("0" + HH) : HH) + ":" + ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
+            $("#totalTime").text(formatted);
+            $("#playTime").text("00:00");
+            $("#play_process .bar").css("width", "0%");
+            record_datas[cur_record]['duration'] = formatted;
+        }
     }
 
     this.pause = function()
@@ -382,18 +409,20 @@ Recording = function(drawingArg)
         }
         self.currTime += self.timeInterval;
         // to do start
-        var SS = self.currTime / 1000;
-        var HH = Math.floor(SS / 3600);
-        var MM = Math.floor((SS % 3600) / 60);
-        var LSS = Math.floor(SS % 60);
-        var formatted;
-        if (HH == 0)
-            formatted = ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
-        else
-            formatted = ((HH < 10) ? ("0" + HH) : HH) + ":" + ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
+        //if (voice_flag == false) {
+            var SS = self.currTime / 1000;
+            var HH = Math.floor(SS / 3600);
+            var MM = Math.floor((SS % 3600) / 60);
+            var LSS = Math.floor(SS % 60);
+            var formatted;
+            if (HH == 0)
+                formatted = ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
+            else
+                formatted = ((HH < 10) ? ("0" + HH) : HH) + ":" + ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
 
-        $("#playTime").text(formatted);
-        $("#totalTime").text('00:00');
+            $("#playTime").text(formatted);
+            $("#totalTime").text('00:00');
+        //}
         // to do end
     }
 
@@ -405,6 +434,37 @@ Recording = function(drawingArg)
         self.recTotalTime = self.currTime;
     }
 
+    this.drawNextScreenShot = function(screenShotTime, timeInterval) {
+        var isLast = false;
+        var actionSetArg = null;
+        var interval = 0;
+
+        if (self.screenShotInfo == null) {
+            actionSetArg = self.actionsSet;
+            isfirst = true;
+        } else {
+            actionSetArg = self.screenShotInfo['actionset'];
+            isfirst = false;
+        }
+        interval = actionSetArg.interval;
+
+        while (screenShotTime > interval) {
+            self.drawActions(actionSetArg.actions, null, isfirst, false);
+            if (actionSetArg.next == null) {
+                self.screenShotInfo = null;
+                isLast = true;
+                return isLast;
+            }
+            actionSetArg = actionSetArg.next
+            interval = actionSetArg.interval;
+        }
+
+        self.screenShotInfo = {
+            "actionset": actionSetArg
+        };
+        return isLast;
+    }
+
     this.playRecording = function(callbackFunctionArg, onPlayEnd, onPause, interruptActionStatus)
     {
         if (self.actionsSet == null)
@@ -413,9 +473,9 @@ Recording = function(drawingArg)
                 onPlayEnd();
             return;
         }
-        
+
         self.playTimeInterval = self.timeInterval;
-        
+
         var status = "";
         if (interruptActionStatus != null && interruptActionStatus() == 'resume')
         {
@@ -487,16 +547,21 @@ Recording = function(drawingArg)
             self.currPlayTime += self.timeInterval;
             self.playActionInterval += self.timeInterval;
 
-            var SS = self.currPlayTime / 1000;
-            var HH = Math.floor(SS / 3600);
-            var MM = Math.floor((SS % 3600) / 60);
-            var LSS = Math.floor(SS % 60);
-            var formatted;
-            if (HH == 0)
-                formatted = ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
-            else
-                formatted = ((HH < 10) ? ("0" + HH) : HH) + ":" + ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
-            $("#playTime").text(formatted);
+            if (voice_flag == false) {
+                var SS = self.currPlayTime / 1000;
+                var HH = Math.floor(SS / 3600);
+                var MM = Math.floor((SS % 3600) / 60);
+                var LSS = Math.floor(SS % 60);
+                var formatted;
+                if (HH == 0)
+                    formatted = ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
+                else
+                    formatted = ((HH < 10) ? ("0" + HH) : HH) + ":" + ((MM < 10) ? ("0" + MM) : MM) + ":" + ((LSS < 10) ? ("0" + LSS) : LSS);
+                $("#playTime").text(formatted);
+                var total_time = record_datas[cur_record]['draw_rec_total'];
+                var percent = self.currPlayTime / total_time * 100;
+                $("#play_process .bar").css("width", percent + "%");
+            }
 
             if (self.playActionInterval > interval)
             {

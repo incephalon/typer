@@ -2,7 +2,7 @@ html {
     width: 100%;
     height: 100%;
     min-width: 740px;
-    min-height: 500px;
+    min-height: 530px;
 }
 
 body {
@@ -39,15 +39,58 @@ body {
 
 .canvas {
     //background-color: white;
-    height:-webkit-calc(100% - 40px);
-    height:-moz-calc(100% - 40px);
-    height:calc(100% - 40px);
+    height:-webkit-calc(100% - 90px);
+    height:-moz-calc(100% - 90px);
+    height:calc(100% - 90px);
     width: 700px;
 }
 
-.bottom {
-    //background-color: blue;
-    //height: 30px;
+.record_list {
+    margin-top: 10px;
+    background-color: #F6F6F6;
+    //padding-top: 10px;
+    //    height: 40px;
+}
+
+.record_data {
+    padding-right: 5px;
+    padding-left: 5px;
+    height: 30px;
+    background-color: #e6e6e6;
+    border: #888888 solid 1px;
+    display: inline-block;
+    line-height: 30px;
+    margin: 5px;
+}
+
+.record_data .title {
+    display: inline-block;
+}
+
+.record_list .selected {
+    border: #888888 solid 2px;
+    font-weight: bold;
+    background-color: #eeeeee;
+}
+
+.record_list .selected a {
+    color : blue;
+}
+
+.record_data:hover {
+    background-color: #aaaaaa;
+}
+
+.record_list .selected:hover {
+    background-color: #eeeeee;
+}
+
+.record_list a {
+    height:100%
+}
+
+a:hover {
+    text-decoration:none;
 }
 
 .divider-tools {
@@ -77,9 +120,14 @@ body {
 .recordBtn {
     color: red;
 }
+#play_process {
+    margin-top: 20px;
+    width: 700px;
+    
+}
 
 #canvas1 {
-    margin-top: 20px;
+    margin-left: -2px;
     border: #888888 dashed 2px;
 }
 
@@ -114,14 +162,23 @@ span.jPicker {
     -webkit-box-shadow: 0 0 18px #91bd09;
 }
 
- a.disabled {
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: #cccccc;
+}
+
+div.disabled a {
     pointer-events: none;
     cursor: default;
     color: #cccccc;
 }
 
 .record-play-control a.disabled i{
-background-color: #eeeeee;
--webkit-box-shadow: 0 0 18px #cccccc;
+    background-color: #eeeeee;
+    -webkit-box-shadow: 0 0 18px #cccccc;
 }
 
+.progress-bar.animate {
+   width: 100%;
+}

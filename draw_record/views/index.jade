@@ -1,0 +1,83 @@
+doctype html5
+html(lang="en")
+  head
+    title Draw and Record
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(href='css/bootstrap/bootstrap.css', rel='Stylesheet')
+    link(href='css/bootstrap/bootstrap-responsive.css', rel='Stylesheet')
+    link(href='font-awesome/js/font-awesome.min.css', rel='stylesheet')
+    link(href='css/style.css', rel='Stylesheet')
+    link(rel='Stylesheet', type='text/css', href='lib/jpicker/jpicker-1.1.6.min.css')
+    link(rel='Stylesheet', type='text/css', href='lib/jpicker/jPicker.css')
+    script(type='text/javascript', src='js/jquery/jquery.js')
+    script(type='text/javascript', src='js/bootstrap/bootstrap.js')
+    script(type='text/javascript', src='js/bootstrap/bootstrap-modal.js')
+    script(type='text/javascript', src='js/draw_record.js')
+    script(src='lib/jpicker/jpicker-1.1.6.js', type='text/javascript')
+    script(src='js/canvas_record/RecordableDrawing.js', type='text/javascript')
+    script(src='js/canvas_record/drawingSerializer.js', type='text/javascript')
+    script(src='js/voice_record/voice-main.js', type='text/javascript')
+    script(src='js/voice_record/voice-recorder.js', type='text/javascript')
+    script(src='js/html2canvas/html2canvas.js', type='text/javascript')
+  body
+    .container
+      .tools.top
+        #brush_stroke.pull-left
+          a.stroke.stroke_selected(href='#', style='font-size: 7px;')
+            i.fa.fa-circle.fa-fw
+          a.stroke(href='#', style='font-size: 10px;')
+            i.fa.fa-circle.fa-fw
+          a.stroke(href='#', style='font-size: 14px;')
+            i.fa.fa-circle.fa-fw
+          a.stroke(href='#', style='font-size: 20px;')
+            i.fa.fa-circle.fa-fw
+          a.stroke(href='#', style='font-size: 26px;')
+            i.fa.fa-circle.fa-fw
+          a.stroke(href='#', style='font-size: 30px;')
+            i.fa.fa-circle.fa-fw
+        .divider-tools.pull-left
+        #brush_color.pull-left
+        .divider-tools.pull-left
+        .pull-left.record-play-control
+          a.playBtn.disabled(href='#', title='Play')
+            i.fa.fa-play.fa-fw.fa-2x
+          a.pauseBtn.disabled(href='#', title='Pause')
+            i.fa.fa-pause.fa-fw.fa-2x
+          a.slowBtn.disabled(href='#', title='More Slowly')
+            i.fa.fa-backward.fa-fw.fa-2x
+          a.fastBtn.disabled(href='#', title='More fast')
+            i.fa.fa-forward.fa-fw.fa-2x
+          a.recordBtn(href='#', title='Record')
+            i.fa.fa-circle.fa-fw.fa-2x
+          a.stopBtn(href='#', title='Stop')
+            i.fa.fa-square.fa-fw.fa-2x
+        .divider-tools.pull-left
+        #playTime.pull-left 00:00
+        .pull-left /
+        #totalTime.pull-left 00:00
+        .pull-right
+          a#clearBtn(href='#', title='Clear', style='margin-right: 10px;')
+            i.fa.fa-eraser.fa-fw.fa-2x
+        .divider-tools.pull-right
+        .pull-right
+          a#convertBtn.disabled(href='#', title='Convert to avi')
+            i.fa.fa-video-camera.fa-fw.fa-2x
+      .canvas.container
+        #play_process
+          .progress.progress-info(style='margin-bottom: 0px;')
+            .bar(style='width: 0%;')
+        canvas#canvas1(width='700px', height='400px')
+        .record_list
+      audio#voice_player(controls='controls', src='', style='display: none;')
+      #convertStatus.modal.fade(tabindex='-1', role='dialog', aria-labelledby='basicModal', aria-hidden='true', style='display: none;')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+              h4#myModalLabel.modal-title Upload data for convert to video
+            .modal-body
+              .progress.progress-info.progress-striped(style='margin-bottom: 9px;')
+                .bar(style='width: 20%;')
+            .modal-footer
+              button.btn.btn-primary.btn-default(type='button', data-dismiss='modal') cancel
