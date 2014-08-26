@@ -63,12 +63,12 @@ app.use(function(err, req, res, next) {
 
 // var debug = require('debug')('draw_record');
 
-// app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 80);
 
 // var server = app.listen(app.get('port'), function() {
 //   debug('Express server listening on port ' + server.address().port);
 // });
 
-var server = app.listen(process.env.PORT || 3001, function(){
-    console.log("cool");
-});
+//var server = app.listen(process.env.PORT || 3001, function(){
+//    console.log("cool");
+//});
