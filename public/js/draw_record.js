@@ -468,27 +468,11 @@ function startScript(canvasId)
                                                         }
 
                                                         drawing.clearCanvas();
-                                                        /*$.ajax({
-                                                         type: "POST",
-                                                         url: "upload/download",
-                                                         data: {
-                                                         directory: directory
-                                                         },
-                                                         datatype: 'application/json; charset=utf-8',
-                                                         success: function(theRes) {
-                                                         }
-                                                         });*/
-                                                        $("#convertStatus .bar").css("width", "100%");
-                                                        setTimeout(function() {
-                                                            if (convert_flag == false) {
-                                                                return;
-                                                            }
-                                                            $("#convertStatus .bar").css("width", "100%");
-                                                            $('<form action="/upload/download" method="POST">' +
+                                                        /*$('<form action="/upload/download" method="POST">' +
                                                                     '<input type="hidden" name="directory" value="' + directory + '">' +
-                                                                    '</form>').submit();
-                                                            modal.modal('hide');
-                                                        }, 5000);
+                                                                    '</form>').submit();*/
+                                                        $("#convertStatus .bar").css("width", "95%");
+                                                        downloadVideo(directory);
                                                     }
                                                 }
                                             });
@@ -501,6 +485,28 @@ function startScript(canvasId)
                 }
             });
         }
+        function downloadVideo(directory){
+        setTimeout(function() {
+		    $.ajax({
+		         type: "POST",
+		         url: "upload/check_download",
+		         data: {
+		         directory: directory
+		         },
+		         datatype: 'application/json; charset=utf-8',
+		         success: function(theRes) {
+		         	 if (theRes == "fail") {
+		         	 	 downloadVideo(directory);
+		         	 }else{
+		         	 	 $('<form action="/upload/download" method="POST">' +
+                            '<input type="hidden" name="directory" value="' + directory + '">' +
+                            '</form>').submit();
+		         	 	 modal.modal('hide');
+		         	 }
+		         }
+		 	});
+		}, 2000);
+    }
 
         function uploadAudio(directory, mp3Data) {
             var reader = new FileReader();

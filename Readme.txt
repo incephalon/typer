@@ -26,4 +26,5 @@
 
 5. run
    in the console.
-   #node app.js
+   #npm install -d
+   #node server.js

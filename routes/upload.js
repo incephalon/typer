@@ -75,10 +75,26 @@ router.post('/image', function(req, res, next) {
     res.send('success');
 });
 
+router.post('/check_download', function(req, res, next) {
+	var directory = req.body.directory;
+    filename = './upload/' + directory + '/' + directory + 'video.flv';
+    
+    if (fs.existsSync(filename)) {
+    	res.send('success');
+	}else{
+    	res.send('fail');
+	}
+});
+
 router.post('/download', function(req, res, next) {
     var directory = req.body.directory;
     filename = './upload/' + directory + '/' + directory + 'video.flv';
-    res.download(filename);
+    
+    if (fs.existsSync(filename)) {
+    	res.download(filename);
+	}else{
+    	res.send('fail');
+	}
 });
 
 rmDir = function(dirPath) {
